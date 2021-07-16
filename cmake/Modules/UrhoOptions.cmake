@@ -138,6 +138,7 @@ cmake_dependent_option(URHO3D_EXTRAS            "Build extra tools"             
 cmake_dependent_option(URHO3D_TOOLS             "Tools enabled"                                         ${URHO3D_ENABLE_ALL} "DESKTOP"                       OFF)
 option(URHO3D_SAMPLES                           "Build samples"                                         OFF)
 option(URHO3D_DOCS                              "Build documentation."                                  OFF)
+cmake_dependent_option(URHO3D_UNITTESTS         "Build unit tests"                                      ${URHO3D_ENABLE_ALL} "NOT WEB;NOT MOBILE;NOT UWP"    OFF)
 cmake_dependent_option(URHO3D_MERGE_STATIC_LIBS "Merge third party dependency libs to Urho3D.a"         OFF "NOT BUILD_SHARED_LIBS"                          OFF)
 option(URHO3D_NO_EDITOR_PLAYER_EXE              "Do not build editor or player executables."            OFF)
 option(URHO3D_CONTAINER_ADAPTERS                "Enable EASTL-to-Urho container adapters for easier porting of legacy code." OFF)
@@ -159,7 +160,7 @@ if (URHO3D_GLES2 OR URHO3D_GLES3)
     set (URHO3D_OPENGL ON)
 endif ()
 
-if (URHO3D_CSHARP)
+if (URHO3D_CSHARP OR URHO3D_UNITTESTS)
     set (URHO3D_MONOLITHIC_HEADER ON)   # Used by wrapper code
 endif ()
 

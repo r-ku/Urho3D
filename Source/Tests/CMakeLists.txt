@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 #
 # Copyright (c) 2008-2020 the Urho3D project.
 #
@@ -21,6 +20,24 @@
 # THE SOFTWARE.
 #
 
-$(dirname $0)/cmake_generic.sh "$@" -G Xcode -T buildsystem=1 -DURHO3D_UNITTESTS=true
+set (TARGET_NAME Tests)
 
-# vi: set ts=4 sw=4 expandtab:
+# Setup GTest
+include(FetchContent)
+FetchContent_Declare(
+    googletest
+    URL https://github.com/google/googletest/archive/e2239ee6043f73722e7aa812a459f54a28552929.zip
+)
+
+# For Windows: Prevent overriding the parent project's compiler/linker settings
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+
+include(CTest)
+
+# Add test target
+file (GLOB_RECURSE SOURCE_FILES *.cpp *.h *.hpp)
+
+add_executable (${TARGET_NAME} ${SOURCE_FILES})
+add_dependencies (${TARGET_NAME} gtest)
+target_link_libraries (${TARGET_NAME} Urho3D gtest_main)
